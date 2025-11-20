@@ -1,0 +1,148 @@
+# Ecor Rouge Sample Project - TodoMVC
+
+## Version
+v1.2.0
+
+## Overview
+We use our internally developed framework, rococo, to build most of our software, so this project was designed to show that you understand the concepts and can use the code effectively.
+
+Your task is to implement TodoMVC (https://todomvc.com/) with a backend to store data. You should use Postgres for data storage.
+
+## Requirements
+
+The application must use both the Vue3 sample project (https://github.com/EcorRouge/rococo-sample-vue3) and the backend sample project (https://github.com/EcorRouge/rococo-sample-backend). Please start by forking each one; your code can be in a public repository.
+
+### Functionality
+The application must allow the user to:
+1. Sign up.
+2. Reset their password via the password reset email.
+3. Log in.
+4. Log out.
+5. Set/edit their name.
+6. See a list of their tasks.
+7. Add tasks.
+8. Edit tasks.
+9. Mark tasks as complete.
+10. Filter the list to show incomplete tasks, completed tasks, or both.
+11. Delete tasks.
+
+### Technology
+1. The frontend must be written in JavaScript.
+2. The backend must be written in Python, use rococo, and run in Docker containers.
+3. All environment-specific variables that are not secrets must be in local.env.
+4. Any secret values (passwords, API keys, etc.) need to have placeholders with self-explanatory names in .env.secrets.example, and there must be no actual secret values committed to GitHub.
+5. The run.sh script should launch the entire backend.
+6. Running quasar dev should launch the frontend, connected to the backend.
+7. Mailjet will be used for sending emails - credentials and template IDs are at the end of this document. You must only test with email addresses that you control - no mailinator, no "test.com", or anything other than an actual email address where you receive email.
+
+## Judgement Criteria
+Your application will be judged on the following criteria:
+1. Providing the functionality listed in the requirements.
+2. Ease of launching the system.
+3. How it looks, works, and feels.
+4. How long it took to implement.
+5. Questions that were asked.
+6. Code structure.
+7. How the new code feels compared to our existing code. (i.e. does it look strange or feel like us?)
+8. Anything "extra" that we didn't ask for.
+
+## Process
+1. Create public GitHub repositories in your own GitHub account.
+2. Use the rococo-sample repos as a starting point.
+3. Implement the functionality.
+4. Make sure that everything in your project is named based on the application name you're given (i.e. we shouldn't see Rococo Sample Application anywhere).
+5. Send your GitHub repo links to Jay using Upwork Messenger.
+   - NOTE: Please do not open a PR to the rococo-sample repos - we are not looking to update the sample code, we provide it as a starting point for your application only.
+
+## Overall Goal
+Please keep in mind that this sample project is designed to show us what it is like to work with you. You must use the Upwork time tracker the entire time you are working on the task. We expect to pay for your time, and the time tracker is the only way we will be able to see how you work. Do not do work without the time tracker and try to explain it away by saying that you didn't want to charge us for reading, thinking, researching, etc. - we absolutely expect to pay for your time and need to see how you work.
+
+Asking questions is fine, but we expect questions that require our input that couldn't be answered with this document, Google, or ChatGPT.
+
+We expect what you deliver to work the first time we run it. It is very, very hard to overcome delivering something that doesn't launch and trying to explain it away. This is probably the easiest task you'll ever be assigned here and is designed to really let you show what you can do.
+
+This isn't a trick project; it is as simple as it sounds, and we really hope that you'll be able to deliver something we like quickly and efficiently.
+
+## Email Templates
+Both templates have variables that you need to populate with the link to your verification or password reset URL. The variables are in the sample code. You should use sample_project@ecortest.com as the sender. Please only use email addresses that you control for testing. Entering random email addresses and causing hard bounces will reduce the deliverability of our domain.
+
+- Verify Email: Template ID 6410451
+- Reset Password: Template ID 6410454
+
+
+## Coding Standards - What Is Bad Code
+
+### Principles: Avoid Bad Code
+Bad code is difficult to understand, change, fix, and expand. Bad code is different than incorrect code - incorrect code doesn't work correctly but can be easily fixed. Incorrect bad code is the worst because it doesn't work correctly, and it's hard to fix.
+
+Code is bad for these reasons. **Always avoid these patterns:**
+
+1. **Is implicit rather than explicit**
+   - ❌ Bad: Nesting function calls instead of setting a variable
+   - ✅ Good: Set intermediate variables with clear names before using them
+   - Example: `const result = processData(transformData(rawData))` → `const transformed = transformData(rawData); const result = processData(transformed)`
+
+2. **Contains incorrect assumptions, often implicit**
+   - ❌ Bad: Assuming values exist without checking (leads to NoneType/null errors)
+   - ✅ Good: Explicitly check for null/undefined/None before using values
+   - Always validate inputs and handle edge cases explicitly
+
+3. **Is terse instead of readable**
+   - ❌ Bad: Implicit assignment, ternary operators, complex lambdas as function parameters
+   - ✅ Good: Use explicit variable assignments, clear if/else statements, extract complex logic to named functions
+   - Avoid: `const result = condition ? func1() : func2()` when the logic is complex
+   - Prefer: Clear if/else blocks or extracted functions with descriptive names
+
+4. **Makes it hard to set breakpoints and/or logging statements**
+   - ❌ Bad: Complex one-liners that can't be easily debugged
+   - ✅ Good: Break code into steps that can be individually inspected
+   - Each logical step should be on its own line or in its own function
+   - Make it easy to add `console.log()` or breakpoints between steps
+
+5. **Does too much**
+   - ❌ Bad: Long functions that do multiple things
+   - ✅ Good: Functions should be short, clear, and focused on one thing
+   - Functions should read like a logical narrative explaining what the system is doing
+   - Sequence complex behavior by calling multiple focused functions
+
+6. **Contains "layer leakage"**
+   - ❌ Bad: Database code inside models, API logic in service layers, etc.
+   - ✅ Good: Keep concerns separated - models handle data structure, services handle business logic, repositories handle data access
+   - Each layer should have clear responsibilities
+
+### Refactoring Guidelines
+
+When refactoring existing code, follow these principles:
+
+1. **Refactoring = Change structure, NOT functionality**
+   - The functionality must remain exactly the same
+   - Tests are required before refactoring
+
+2. **Test Requirements**
+   - One test for the happy path
+   - One test for each error that is handled
+   - Tests must be fast and easy to run
+   - Tests must stay green (passing) throughout the refactoring process
+
+3. **Refactor Top-Down**
+   - Start at the highest level of the call chain (e.g., API layer)
+   - Clean upper layers first, work down to lower layers
+   - Work function-by-function
+   - Run tests after each change - they must remain green
+
+4. **Refactoring Steps**
+   - Step 1: Put tests at the highest level of the call chain
+   - Step 2: Change code at the highest level to be good (extract functions, improve readability)
+   - Step 3: Go through entire call chain step-by-step, cleaning each function
+   - Run tests after each change - they must remain green
+
+### Code Quality Checklist
+
+Before writing or reviewing code, ensure:
+- [ ] Code is explicit, not implicit
+- [ ] All assumptions are validated (no null/undefined errors)
+- [ ] Code is readable, not terse
+- [ ] Breakpoints and logging can be easily added
+- [ ] Functions do one thing and are focused
+- [ ] No layer leakage (concerns are properly separated)
+- [ ] Code reads like a logical narrative
