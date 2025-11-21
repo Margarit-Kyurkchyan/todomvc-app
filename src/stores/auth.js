@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { Notify } from 'quasar'
 import axios from 'config/axios'
 import localStorageService from 'services/localStorage.service'
+import personService from 'services/person.service'
 import { handleAuthRequest, handleOAuthRequest } from '@/utils/apiHelper'
 
 // Constants for localStorage keys
@@ -244,6 +245,40 @@ export const useAuthStore = defineStore('auth', {
     updateUser(userData) {
       this.user = { ...this.user, ...userData }
       localStorageService.setItem(STORAGE_KEYS.USER, this.user)
+    },
+
+    /**
+     * Fetch current user profile from API
+     */
+    async fetchUserProfile() {
+      try {
+        const userData = await personService.getCurrentUser()
+        this.updateUser(userData)
+        return userData
+      } catch (error) {
+        return this.handleApiError(error, 'Failed to fetch user profile')
+      }
+    },
+
+    /**
+     * Update user profile (first name and last name)
+     */
+    async updateUserProfile(firstName, lastName) {
+      try {
+        const updatedUserData = await personService.updateCurrentUser(firstName, lastName)
+        this.updateUser(updatedUserData)
+        
+        Notify.create({
+          message: 'Profile updated successfully',
+          color: 'positive',
+          position: 'top',
+          timeout: 3000,
+        })
+        
+        return true
+      } catch (error) {
+        return this.handleApiError(error, 'Failed to update profile')
+      }
     },
 
     /**
