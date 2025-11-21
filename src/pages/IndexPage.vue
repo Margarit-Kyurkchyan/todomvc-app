@@ -1,5 +1,12 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center column">
+    <!-- Welcome message -->
+    <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 q-mb-md text-center">
+      <div class="text-h6 text-grey-8">
+        Welcome {{ authStore.user?.first_name }} {{ authStore.user?.last_name }}
+      </div>
+    </div>
+
     <q-card class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 q-pa-xs q-pa-md-sm">
       <q-card-section>
         <div class="text-h4 text-center text-weight-bold" style="color: #b83f45">todos</div>
@@ -110,7 +117,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { Notify } from 'quasar'
+import { useAuthStore } from 'stores/auth'
 import taskService from 'services/task.service'
+
+const authStore = useAuthStore()
 
 const tasks = ref([])
 const loadingTasks = ref(false)
