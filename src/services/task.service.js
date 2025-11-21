@@ -46,11 +46,11 @@ class TaskService {
    */
   async updateTask(taskId, title, completed) {
     const payload = {}
-    
+
     if (title !== undefined && title !== null) {
       payload.title = title
     }
-    
+
     if (completed !== undefined && completed !== null) {
       payload.completed = completed
     }
@@ -85,4 +85,3 @@ class TaskService {
 }
 
 export default new TaskService()
-
